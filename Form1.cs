@@ -63,6 +63,13 @@ namespace RocketScience
             {
                 horVelocity = 5;
             }
+            else if(e.KeyCode == Keys.Space)
+            {
+                Bullet bullet = new Bullet();
+                bullet.Left = rocket.Left + rocket.Width / 2;
+                bullet.Top = rocket.Top;
+                this.Controls.Add(bullet);
+            }
         }
 
         private void Game_Load(object sender, EventArgs e)
@@ -70,4 +77,34 @@ namespace RocketScience
 
         }
     }
+
+    class Bullet : PictureBox
+    {
+        Timer bulletTimer = null;
+        int verVelocity = -5;
+
+        public Bullet()
+        {
+            this.Width = 2;
+            this.Height = 10;
+            this.BackColor = Color.Red;
+
+            InitializeBullet();
+        }
+
+        private void InitializeBullet()
+        {
+            bulletTimer = new Timer();
+            bulletTimer.Interval = 10;
+            bulletTimer.Tick += BulletTimer_Tick;
+            bulletTimer.Start();
+        }
+
+        private void BulletTimer_Tick(object sender, EventArgs e)
+        {
+            this.Top += verVelocity;
+        }
+
+    }
+
 }
