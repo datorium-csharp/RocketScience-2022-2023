@@ -20,6 +20,7 @@ namespace RocketScience
         int rocketImageCounter = 0;
 
         List<Asteroid> asteroids = new List<Asteroid>();
+        List<Bullet> bullets = new List<Bullet>();
 
         public Game()
         {
@@ -49,6 +50,8 @@ namespace RocketScience
             var asteroid = new Asteroid();
             asteroid.Top = 100;
             asteroid.Left = 300;
+            this.Controls.Add(asteroid);
+            asteroids.Add(asteroid);
         }
 
         private void GameTimer_Tick(object sender, EventArgs e)
@@ -76,10 +79,33 @@ namespace RocketScience
             }
             else if(e.KeyCode == Keys.Space)
             {
-                Bullet bullet = new Bullet();
-                bullet.Left = rocket.Left + rocket.Width / 2;
-                bullet.Top = rocket.Top;
-                this.Controls.Add(bullet);
+                FireBullet();
+            }
+        }
+
+        private void FireBullet()
+        {
+            Bullet bullet = new Bullet();
+            bullet.Left = rocket.Left + rocket.Width / 2;
+            bullet.Top = rocket.Top;
+            this.Controls.Add(bullet);
+            bullets.Add(bullet);
+        }
+
+        private void CollisionCheck()
+        {
+            foreach (var asteroid in asteroids)
+            {
+                foreach (var bullet in bullets)
+                {
+                    if (asteroid.Bounds.IntersectsWith(bullet.Bounds))
+                    {
+                        //collision detected
+                        //we should remove both
+                        //asteroid
+                        //and the bullet
+                    }
+                }
             }
         }
 
@@ -122,9 +148,9 @@ namespace RocketScience
     {
         public Asteroid()
         {
-            this.BackColor= Color.Gray;
-            this.Width = 10;
-            this.Height = 10;
+            this.BackColor= Color.Orange;
+            this.Width = 40;
+            this.Height = 40;
         }
     }
 
