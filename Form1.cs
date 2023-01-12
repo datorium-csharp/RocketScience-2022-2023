@@ -19,10 +19,12 @@ namespace RocketScience
         int horVelocity = 0;
         int rocketImageCounter = 0;
 
+        List<Asteroid> asteroids = new List<Asteroid>();
+
         public Game()
         {
             InitializeComponent();
-            InitializeGame();
+            InitializeGame();            
         }
 
         private void InitializeGame()
@@ -38,6 +40,15 @@ namespace RocketScience
             rocketTimer.Start();
 
             this.KeyDown += Game_KeyDown;
+
+            InitializeAsteroids();
+        }
+
+        private void InitializeAsteroids()
+        {
+            var asteroid = new Asteroid();
+            asteroid.Top = 100;
+            asteroid.Left = 300;
         }
 
         private void GameTimer_Tick(object sender, EventArgs e)
@@ -105,6 +116,16 @@ namespace RocketScience
             this.Top += verVelocity;
         }
 
+    }
+
+    class Asteroid : PictureBox
+    {
+        public Asteroid()
+        {
+            this.BackColor= Color.Gray;
+            this.Width = 10;
+            this.Height = 10;
+        }
     }
 
 }
