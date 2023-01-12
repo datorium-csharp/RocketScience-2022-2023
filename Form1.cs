@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Resources;
+using System.Net.Sockets;
 
 namespace RocketScience
 {
@@ -57,6 +58,7 @@ namespace RocketScience
         private void GameTimer_Tick(object sender, EventArgs e)
         {
             rocket.Left += horVelocity;
+            CollisionCheck();
         }
 
         private void RocketTimer_Tick(object sender, EventArgs e)
@@ -104,6 +106,10 @@ namespace RocketScience
                         //we should remove both
                         //asteroid
                         //and the bullet
+
+                        asteroid.Explode();
+                        this.Controls.Remove(asteroid);
+                        this.Controls.Remove(bullet);
                     }
                 }
             }
@@ -146,12 +152,33 @@ namespace RocketScience
 
     class Asteroid : PictureBox
     {
+        int expImageCounter = 0;
+        Timer explosionTimer = null;
+
         public Asteroid()
         {
             this.BackColor= Color.Orange;
             this.Width = 40;
             this.Height = 40;
         }
+
+        public void Explode()
+        {
+            explosionTimer = new Timer();
+            explosionTimer.Interval = 50;
+            explosionTimer.Tick += ExplosionTimer_Tick;
+            explosionTimer.Start();
+        }
+
+        private void ExplosionTimer_Tick(object sender, EventArgs e)
+        {
+            string explosionImage = $"exp_0{expImageCounter.ToString("00")}";
+            this.Image = (Image)Resources.ResourceManager.GetObject(explosionImage);
+            expImageCounter += 1;
+            if (expImageCounter > 22) explosionTimer.Stop();
+        }
+
+
     }
 
 }
