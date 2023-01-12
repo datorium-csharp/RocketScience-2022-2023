@@ -43,6 +43,8 @@ namespace RocketScience
 
             this.KeyDown += Game_KeyDown;
 
+            this.BackColor = Color.Black;
+
             InitializeAsteroids();
         }
 
@@ -108,7 +110,7 @@ namespace RocketScience
                         //and the bullet
 
                         asteroid.Explode();
-                        this.Controls.Remove(asteroid);
+                        //this.Controls.Remove(asteroid);
                         this.Controls.Remove(bullet);
                     }
                 }
@@ -158,24 +160,31 @@ namespace RocketScience
         public Asteroid()
         {
             this.BackColor= Color.Orange;
-            this.Width = 40;
-            this.Height = 40;
+            this.Width = 120;
+            this.Height = 120;
+            this.SizeMode = PictureBoxSizeMode.StretchImage;
         }
 
         public void Explode()
         {
             explosionTimer = new Timer();
-            explosionTimer.Interval = 50;
+            explosionTimer.Interval = 200;
             explosionTimer.Tick += ExplosionTimer_Tick;
             explosionTimer.Start();
         }
 
         private void ExplosionTimer_Tick(object sender, EventArgs e)
         {
-            string explosionImage = $"exp_0{expImageCounter.ToString("00")}";
+            this.BackColor = Color.Transparent;
+            string explosionImage = $"exp0{expImageCounter.ToString("00")}";
             this.Image = (Image)Resources.ResourceManager.GetObject(explosionImage);
             expImageCounter += 1;
-            if (expImageCounter > 22) explosionTimer.Stop();
+            if (expImageCounter > 22)
+            {
+                explosionTimer.Stop();
+                //expImageCounter = 0;
+            }
+            
         }
 
 
