@@ -50,7 +50,7 @@ namespace RocketScience
 
         private void InitializeAsteroids()
         {
-            var asteroid = new Asteroid();
+            var asteroid = new Asteroid(this);
             asteroid.Top = 100;
             asteroid.Left = 300;
             this.Controls.Add(asteroid);
@@ -109,8 +109,7 @@ namespace RocketScience
                         //asteroid
                         //and the bullet
 
-                        asteroid.Explode();
-                        //this.Controls.Remove(asteroid);
+                        asteroid.Explode();                        
                         this.Controls.Remove(bullet);
                     }
                 }
@@ -122,72 +121,4 @@ namespace RocketScience
 
         }
     }
-
-    class Bullet : PictureBox
-    {
-        Timer bulletTimer = null;
-        int verVelocity = -5;
-
-        public Bullet()
-        {
-            this.Width = 2;
-            this.Height = 10;
-            this.BackColor = Color.Red;
-
-            InitializeBullet();
-        }
-
-        private void InitializeBullet()
-        {
-            bulletTimer = new Timer();
-            bulletTimer.Interval = 10;
-            bulletTimer.Tick += BulletTimer_Tick;
-            bulletTimer.Start();
-        }
-
-        private void BulletTimer_Tick(object sender, EventArgs e)
-        {
-            this.Top += verVelocity;
-        }
-
-    }
-
-    class Asteroid : PictureBox
-    {
-        int expImageCounter = 0;
-        Timer explosionTimer = null;
-
-        public Asteroid()
-        {
-            this.BackColor= Color.Orange;
-            this.Width = 120;
-            this.Height = 120;
-            this.SizeMode = PictureBoxSizeMode.StretchImage;
-        }
-
-        public void Explode()
-        {
-            explosionTimer = new Timer();
-            explosionTimer.Interval = 200;
-            explosionTimer.Tick += ExplosionTimer_Tick;
-            explosionTimer.Start();
-        }
-
-        private void ExplosionTimer_Tick(object sender, EventArgs e)
-        {
-            this.BackColor = Color.Transparent;
-            string explosionImage = $"exp0{expImageCounter.ToString("00")}";
-            this.Image = (Image)Resources.ResourceManager.GetObject(explosionImage);
-            expImageCounter += 1;
-            if (expImageCounter > 22)
-            {
-                explosionTimer.Stop();
-                //expImageCounter = 0;
-            }
-            
-        }
-
-
-    }
-
 }
