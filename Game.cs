@@ -61,6 +61,7 @@ namespace RocketScience
         {
             rocket.Left += horVelocity;
             CollisionCheck();
+            BulletTopCollision();
         }
 
         private void RocketTimer_Tick(object sender, EventArgs e)
@@ -98,23 +99,51 @@ namespace RocketScience
 
         private void CollisionCheck()
         {
-            foreach (var asteroid in asteroids)
-            {
-                foreach (var bullet in bullets)
+            if (asteroids.Count == 0 || bullets.Count == 0) return;
+            try
+            {   
+                foreach (var asteroid in asteroids)
                 {
-                    if (asteroid.Bounds.IntersectsWith(bullet.Bounds))
+                    foreach (var bullet in bullets)
                     {
-                        //collision detected
-                        //we should remove both
-                        //asteroid
-                        //and the bullet
+                        if (asteroid.Bounds.IntersectsWith(bullet.Bounds))
+                        {
+                            //collision detected
+                            //we should remove both
+                            //asteroid
+                            //and the bullet
 
-                        asteroid.Explode();                        
-                        this.Controls.Remove(bullet);
+                            asteroid.Explode();
+                            asteroids.Remove(asteroid);
+                            this.Controls.Remove(bullet);
+                            bullets.Remove(bullet);
+                            if (asteroids.Count == 0 || bullets.Count == 0) return;
+                        }
                     }
                 }
             }
+            catch(Exception)
+            {
+                throw;
+            }            
         }
+
+        private void BulletTopCollision()
+        {
+            if (bullets.Count == 0) return;
+            for (int i = bullets.Count - 1; i >= 0; i--)
+            {
+                if (bullets[i].Top <= 0)
+                {
+                    var bullet = bullets[i];
+                    this.Controls.Remove(bullet);
+                    bullets.RemoveAt(i);
+                    bullet.Dispose();
+                }
+            }
+        }
+
+        
 
         private void Game_Load(object sender, EventArgs e)
         {

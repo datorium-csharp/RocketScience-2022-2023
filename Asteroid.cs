@@ -27,7 +27,7 @@ namespace RocketScience
         public void Explode()
         {
             explosionTimer = new Timer();
-            explosionTimer.Interval = 200;
+            explosionTimer.Interval = 50;
             explosionTimer.Tick += ExplosionTimer_Tick;
             explosionTimer.Start();
         }
